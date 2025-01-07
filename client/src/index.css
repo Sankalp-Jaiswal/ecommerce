@@ -1,3 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Outfit:wght@100..900&family=Prata&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+a.active hr {
+  display: block;
+}
+
+.prata-regular {
+  font-family: "Prata", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+*{
+    font-family: Outfit;
+}
+@media (max-width:640px){
+    a.active{
+        background-color: black;
+        color: white;
+    }
+    a:hover{
+        background-color: rgba(217, 214, 214, 0.382);
+    }
+    a.active:hover{
+        background-color: black;
+        color: white;
+    }
+}
