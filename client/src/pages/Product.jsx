@@ -15,6 +15,7 @@ const Product = () => {
   const [size, setSize] = useState('')
 
   const fetchProductData = async () => {
+    
     products.forEach((item) => {
       if (item._id === productId) {
         setProductData(item);
@@ -23,6 +24,8 @@ const Product = () => {
       }
     });
   };
+
+    
 
   useEffect(() => {
     fetchProductData();

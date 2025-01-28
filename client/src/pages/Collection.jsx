@@ -62,7 +62,7 @@ const Collection = () => {
   },[sortType])
   useEffect(() => {
     applyFilter()
-  }, [subCategory, category, search, showSearch])
+  }, [subCategory, category, search, showSearch,products])
 
   return (
     <div className='flex flex-col sm:flex-row gap-1 sm:gap-10 pt-2 sm:pt-10 border-t'>

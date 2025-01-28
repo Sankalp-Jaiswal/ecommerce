@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 const createToken = (id) => {
   const token = jwt.sign({ id }, process.env.JWT_SECRET_KEY, {
-    expiresIn: "1h",
+    expiresIn: "100h",
   });
   return token;
 };
@@ -15,11 +15,11 @@ export const loginUser = async (req, res) => {
     const { email, password } = req.body;
     const user = await userModel.findOne({ email });
     if (!user) {
-      return res.status(404).json({ success: false, message: "User not found" });
+      return res.json({ success: false, message: "User not found" });
     }
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) {
-      return res.status(401).json({ success: false, message: "Invalid credentials" });
+      return res.json({ success: false, message: "Invalid credentials" });
     }
     const token = createToken(user._id);
     res.json({ success: true, token });
@@ -33,22 +33,24 @@ export const loginUser = async (req, res) => {
 export const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
+
+    if (!name || !email || !password) {
+      return res.json({ success: false, message: 'Please provide all required fields' });
+    }
+
     const existingUser = await userModel.findOne({ email });
-    if (existingUser)
-      return res
-        .status(400)
-        .json({ success: false, msg: "User already exists" });
+    if (existingUser) {
+      return res.json({ success: false, message: 'User already exists' });
+    }
 
     // validating email and strong password
     if (!validator.isEmail(email)) {
-      return res
-        .status(400)
-        .json({ success: false, msg: "Please enter a valid email" });
+      return res.json({ success: false, message: 'Please enter a valid email' });
     }
     if (password.length < 8) {
-      return res.status(400).json({
+      return res.json({
         success: false,
-        msg: "Password should be at least 8 characters",
+        message: 'Password should be at least 8 characters',
       });
     }
     // if (!validator.isStrongPassword(password)) {
@@ -85,7 +87,7 @@ export const adminLogin = async (req, res) => {
     const token = jwt.sign(email+password,process.env.JWT_SECRET_KEY)
     res.json({success:true,token})
   }else{
-    res.status(400).json({success:false,msg:"Invalid email or password"})
+    res.status(400).json({success:false,message:"Invalid email or password"}) // Ensure message property is included
   }
  } catch (error) {
   console.log(error)
